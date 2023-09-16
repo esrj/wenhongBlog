@@ -6,11 +6,13 @@ const logger = require('morgan');
 const app = express();
 const model = require('./model/model')
 const csrf = require('csurf')
+const compression = require('compression')
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
+app.use(compression())
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));

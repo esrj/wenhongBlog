@@ -23,7 +23,8 @@ passport.use(
         {
             clientID: '347464423661-u9qfvmc2v1n053j9u3lmakadbgc6o7pl.apps.googleusercontent.com',
             clientSecret: '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',
-            callbackURL: 'http://127.0.0.1:3000/auth/google/callback/', // 根據你的設置調整回調URL
+            // callbackURL: 'http://127.0.0.1:3000/auth/google/callback/', // 根據你的設置調整回調URL
+            callbackURL: 'http://blog.wenhong.online/auth/google/callback/', // 根據你的設置調整回調URL
         },
         (accessToken, refreshToken, profile, done) => {
             console.log(accessToken, refreshToken, profile, done)
