@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <% var isAuthenticated %>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,shrink-to-fit=no">
+    <meta name="description"
+          content="Quick Website UI Kit is an innovative HTML template solution which combines beautiful design and flawless functionality.">
+    <meta name="author" content="Webpixels">
+    <title>文宏部落客</title>
+    <script>window.addEventListener("load", function () { setTimeout(function () { document.querySelector("body").classList.add("loaded") }, 300) })</script>
+    <link rel="icon" href="/picture/favicon.png" type="image/png">
+    <link rel="stylesheet" href="/css/my-index.css">
+    <link rel="stylesheet" href="/css/all.min.css">
+    <link rel="stylesheet" href="/css/quick-website.css">
+    <link rel="stylesheet" href="/css/docs.css">
+    <link rel="stylesheet" href="/css/search.css">
+
+</head>
+
+<body class="docs">
+<header class="header" id="header-main">
+    <nav class="navbar navbar-main navbar-expand-lg fixed-top navbar-shadow navbar-light bg-white border-bottom"
+         id="navbar-main">
+        <div class="container-fluid justify-content-between">
+            <div class="navbar-user d-lg-none">
+                <ul class="navbar-nav flex-row align-items-center">
+                    <li class="nav-item">
+                        <a href="#" class="nav-link nav-link-icon sidenav-toggler" data-action="sidenav-pin"
+                           data-target="#sidenav-main">
+                            <i data-feather="menu"></i>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            <a class="navbar-brand" href="/">
+                <img alt="Image placeholder" src="/picture/dark.svg" id="navbar-logo">
+            </a>
+
+            <% if(isAuthenticated === true){ %>
+                <a  onclick="logout_()" href="#" class="btn btn-sm btn-primary ml-4 btn-icon d-none d-lg-inline-flex">
+                    <span class="btn-inner--icon">
+                        <i style="margin-bottom: 2.5px" data-feather="user"></i>
+                    </span>
+                    <input type="hidden" id="_csrf" name="_csrf" value ="<%= csrfToken %>"/>
+                    <span class="btn-inner--text">登出</span>
+                </a>
+            <% }else{ %>
+                <a  href=/login class="btn btn-sm btn-primary ml-4 btn-icon d-none d-lg-inline-flex">
+                    <span class="btn-inner--icon">
+                        <i style="margin-bottom: 2.5px" data-feather="user"></i>
+                    </span>
+                    <span class="btn-inner--text">登入</span>
+                </a>
+            <% } %>
+        </div>
+    </nav>
+</header>
+
+
+

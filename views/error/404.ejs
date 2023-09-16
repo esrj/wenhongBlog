@@ -1,0 +1,77 @@
+<%-include('../include/header.ejs')%>
+<div class="container-fluid container-docs">
+    <nav style="max-width:100% !important;"  class="sidebar_padding sidenav  navbar-vertical navbar-expand-xs navbar-light bg-white" id="sidenav-main">
+        <div style="display: flex">
+            <div class="scrollbar-inner px-4">
+                <div class="docs-sidebar">
+                    <a  href="/">
+                        <h5  class="navbar-title mt-4">
+                            <i  class="navbar-icon" data-feather="home"></i><span class="sidebar_text">首頁</span>
+                        </h5>
+                    </a>
+                </div>
+                <div class="docs-sidebar">
+                    <a id="toggle-search-button" href="#search">
+                        <h5 id="search" class="navbar-title  mt-4">
+                            <i  class="navbar-icon" data-feather="search"></i><span class="sidebar_text">搜尋</span>
+                        </h5>
+                    </a>
+                </div>
+                <div class="docs-sidebar">
+                    <a  href="/explore">
+                        <h5 class="navbar-title  mt-4">
+                            <i  class="navbar-icon" data-feather="compass"></i><span class="sidebar_text">探索</span>
+                        </h5>
+                    </a>
+                </div>
+                <div class="docs-sidebar">
+                    <a href="/msg">
+                        <h5 class="navbar-title mt-4">
+                            <i  class="navbar-icon" data-feather="message-circle"></i><span class="sidebar_text">訊息</span>
+                        </h5>
+                    </a>
+                </div>
+                <div class="docs-sidebar">
+                    <a href="/notice">
+                        <h5 class="navbar-title mt-4">
+                            <i  class="navbar-icon" data-feather="heart"></i><span class="sidebar_text">通知</span>
+                        </h5>
+                    </a>
+                </div>
+                <div class="docs-sidebar">
+                    <a href="/upload">
+                        <h5 class="navbar-title  mt-4">
+                            <i  class="navbar-icon" data-feather="plus-square"></i><span class="sidebar_text">建立</span>
+                        </h5>
+                    </a>
+                </div>
+                <% if(isAuthenticated === true){ %>
+                <div class="docs-sidebar">
+                    <a  href="/profile/<%=user._id%>">
+                        <h5 class="navbar-title  mt-4">
+                            <img class="sidebar_img" src="/<%=user.image%>"><span class="sidebar_text">個人檔案</span>
+                        </h5>
+                    </a>
+                </div>
+                <% } %>
+            </div>
+            <div  id="search-container">
+                <div class="form-group">
+                    <input id="search_user" type="text" class="form-control form-control-muted" placeholder="搜尋用戶 . . . ">
+                </div>
+                <table>
+                    <span id="search_user_result_list"></span>
+                </table>
+            </div>
+        </div>
+    </nav>
+</div>
+<div class="main-content row position-relative pb-5">
+    <span class="col-md-7" >
+        <div style="margin: 90px"></div>
+        <h1> 404 not found </h1>
+        <p> 很抱歉，此頁面不存在<a href="/"> 點擊此處返回主頁面</a></p>
+    </span>
+</div>
+<%-include('../include/footer.ejs')%>
+

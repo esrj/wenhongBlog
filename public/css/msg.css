@@ -1,0 +1,88 @@
+
+.scrollable-content {
+    max-height: 100%; /* 设置最大高度 */
+    overflow: auto; /* 显示滚动条 */
+    padding: 10px; /* 可选：添加内边距样式 */
+}
+.msg_list{
+    padding-top: 90px;
+    border-right: 1px solid #e2e8f0;
+}
+.msg{
+    padding-top: 90px;
+}
+.msg_title{
+    color: #bebdcb;
+    display: flex;
+    justify-content: center;
+    margin: 0;
+}
+@media (max-width: 1500px) {
+    .fixed-footer {
+        width: 46.5%;
+    }
+}
+@media (max-width: 1450px) {
+    .fixed-footer {
+        width: 46%;
+    }
+}
+@media (max-width: 1400px) {
+    .fixed-footer {
+        width: 45.5%;
+    }
+}
+@media (max-width: 1350px) {
+    .fixed-footer {
+        width: 45%;
+    }
+}
+@media (max-width: 1300px) {
+    .fixed-footer {
+        width: 44.5%;
+    }
+}
+@media (max-width: 1250px) {
+    .fixed-footer {
+        width: 44%;
+    }
+}
+@media (max-width: 1200px) {
+    .fixed-footer {
+        width: 43.5%;
+    }
+}
+@media (max-width: 1150px) {
+    .fixed-footer {
+        width: 43%;
+    }
+}
+@media (max-width: 1100px) {
+    .fixed-footer {
+        width: 42%;
+    }
+}
+@media (max-width: 1050px) {
+    .fixed-footer {
+        width: 41%;
+    }
+}
+@media (max-width: 1000px) {
+    .fixed-footer {
+        width: 40%;
+    }
+}
+@media (max-width: 991px) {
+    .fixed-footer {
+        width: 55%;
+    }
+}
+@media (max-width: 767px) {
+    .fixed-footer {
+        display: none;
+    }
+    .msg_list{
+        padding-top: 90px;
+        border-right: 0
+    }
+}

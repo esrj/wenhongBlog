@@ -1,0 +1,141 @@
+<%-include('../include/header.ejs')%>
+<link rel="stylesheet" href="css/notice.css">
+
+
+
+
+<div class="container-fluid container-docs">
+    <nav style="max-width:100% !important;"  class="sidebar_padding sidenav  navbar-vertical navbar-expand-xs navbar-light bg-white" id="sidenav-main">
+        <div style="display: flex">
+            <div class="scrollbar-inner px-4">
+                <div class="docs-sidebar">
+                    <a  href="/">
+                        <h5  class="navbar-title mt-4">
+                            <i   class="navbar-icon" data-feather="home"></i><span class="sidebar_text">首頁</span>
+                        </h5>
+                    </a>
+                </div>
+                <div class="docs-sidebar">
+                    <a  id="toggle-search-button" href="#search">
+                        <h5 id="search" class="navbar-title  mt-4">
+                            <i  class="navbar-icon" data-feather="search"></i><span class="sidebar_text">搜尋</span>
+                        </h5>
+                    </a>
+                </div>
+                <div class="docs-sidebar">
+                    <a  href="/explore">
+                        <h5  class="navbar-title  mt-4">
+                            <i  class="navbar-icon" data-feather="compass"></i><span class="sidebar_text">探索</span>
+                        </h5>
+                    </a>
+                </div>
+                <div class="docs-sidebar">
+                    <a  href="/msg">
+                        <h5  class="navbar-title mt-4">
+                            <i  class="navbar-icon" data-feather="message-circle"></i><span class="sidebar_text">訊息</span>
+                        </h5>
+                    </a>
+                </div>
+                <div class="docs-sidebar">
+                    <a  href="/notice">
+                        <h5  class="navbar-title-strong mt-4">
+                            <i  class="navbar-icon-strong" data-feather="heart"></i><span class="sidebar_text">通知</span>
+                        </h5>
+                    </a>
+                </div>
+                <div class="docs-sidebar">
+                    <a href="/upload">
+                        <h5  class="navbar-title  mt-4">
+                            <i  class="navbar-icon" data-feather="plus-square"></i><span class="sidebar_text">建立</span>
+                        </h5>
+                    </a>
+                </div>
+                <% if(isAuthenticated === true){ %>
+                <div class="docs-sidebar">
+                    <a  href="/profile/<%=user._id%>">
+                        <h5  class="navbar-title  mt-4">
+                            <img class="sidebar_img" src="/<%=user.image%>"><span class="sidebar_text">個人檔案</span>
+                        </h5>
+                    </a>
+                </div>
+                <% } %>
+            </div>
+            <div  id="search-container">
+                <div class="form-group">
+                    <input id="search_user" type="text" class="form-control form-control-muted" placeholder="搜尋用戶 . . . ">
+                </div>
+                <table>
+                    <span id="search_user_result_list"></span>
+                </table>
+            </div>
+        </div>
+    </nav>
+</div>
+
+<div class=" main-content row position-relative pb-5 top">
+    <div class="col-md-12 max-content docs-content pb-5">
+        <h5>您的通知</h5>
+        <hr style="margin: 0">
+        <span id="notice">
+            <% for(let notice of notices){ %>
+                <div class="p-3 d-flex">
+                    <div>
+                        <div class="icon icon-shape rounded-circle bg-success text-white mr-4">
+                            <a href="<%=notice.url%>"><img class="notice_img" src="<%=notice.image%>"></a>
+                        </div>
+                    </div>
+                    <div>
+                        <a href="<%=notice.url%>"><span class="h6"><%=notice.type%></span></a>
+                        <a href="<%=notice.url%>">
+                            <p class="text-sm text-muted mb-0">
+                                <%=notice.content%>
+                            </p>
+                        </a>
+                    </div>
+                </div>
+                <hr style="margin: 0">
+            <% } %>
+        </span>
+    </div>
+</div>
+
+
+<%-include('../include/footer.ejs')%>
+
+<script>
+
+    const socket = io()
+    socket.on('<%=user._id%>',notice=>{
+        axios.post('/notice', {
+            image: notice.image,
+            type: notice.type,
+            content: notice.content,
+            url:notice.url,
+            _csrf: '<%=csrfToken%>'
+        })
+
+        $("#notice").prepend($(`
+            <div class="p-3 d-flex">
+                <div>
+                    <div class="icon icon-shape rounded-circle bg-success text-white mr-4">
+                        <a href="${notice.url}">
+                            <img class="notice_img" src="${notice.image}">
+                        </a>
+                    </div>
+                </div>
+                <div>
+                    <a href="${notice.url}"><span class="h6">${notice.type}</span></a>
+                    <a href="${notice.url}">
+                        <p class="text-sm text-muted mb-0">
+                            ${notice.content}
+                        </p>
+                    </a>
+                </div>
+            </div>
+            <hr style="margin: 0">
+        `))
+    })
+
+
+</script>
+

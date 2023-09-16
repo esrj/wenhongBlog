@@ -1,0 +1,114 @@
+<%-include('../include/header.ejs')%>
+<link rel="stylesheet" href="/css/upload.css">
+<link rel="stylesheet" href="/css/profile.css">
+<div class="container-fluid container-docs">
+    <nav style="max-width:100% !important;"  class="sidebar_padding sidenav  navbar-vertical navbar-expand-xs navbar-light bg-white" id="sidenav-main">
+        <div style="display: flex">
+            <div class="scrollbar-inner px-4">
+                <div class="docs-sidebar">
+                    <a  href="/">
+                        <h5 class="navbar-title mt-4">
+                            <i   class="navbar-icon" data-feather="home"></i><span class="sidebar_text">首頁</span>
+                        </h5>
+                    </a>
+                </div>
+                <div class="docs-sidebar">
+                    <a id="toggle-search-button" href="#search">
+                        <h5 id="search" class="navbar-title  mt-4">
+                            <i  class="navbar-icon" data-feather="search"></i><span class="sidebar_text">搜尋</span>
+                        </h5>
+                    </a>
+                </div>
+                <div class="docs-sidebar">
+                    <a href="/explore">
+                        <h5 class="navbar-title  mt-4">
+                            <i  class="navbar-icon" data-feather="compass"></i><span class="sidebar_text">探索</span>
+                        </h5>
+                    </a>
+                </div>
+                <div class="docs-sidebar">
+                    <a  href="/msg">
+                        <h5 class="navbar-title mt-4">
+                            <i  class="navbar-icon" data-feather="message-circle"></i><span class="sidebar_text">訊息</span>
+                        </h5>
+                    </a>
+                </div>
+                <div class="docs-sidebar">
+                    <a href="/notice">
+                        <h5 class="navbar-title mt-4">
+                            <i  class="navbar-icon" data-feather="heart"></i><span class="sidebar_text">通知</span>
+                        </h5>
+                    </a>
+                </div>
+                <div class="docs-sidebar">
+                    <a href="/upload">
+                        <h5  class="navbar-title  mt-4">
+                            <i  class="navbar-icon" data-feather="plus-square"></i><span class="sidebar_text">建立</span>
+                        </h5>
+                    </a>
+                </div>
+                <% if(isAuthenticated === true){ %>
+                <div class="docs-sidebar">
+                    <a  href="/profile/<%=user._id%>">
+                        <h5 class="navbar-title-strong  mt-4">
+                            <img class="sidebar_img" src="/<%=user.image%>"><span class="sidebar_text">個人檔案</span>
+                        </h5>
+                    </a>
+                </div>
+                <% } %>
+            </div>
+            <div  id="search-container">
+                <div class="form-group">
+                    <input id="search_user" type="text" class="form-control form-control-muted" placeholder="搜尋用戶 . . . ">
+                </div>
+                <table>
+                    <span id="search_user_result_list"></span>
+                </table>
+            </div>
+        </div>
+    </nav>
+</div>
+
+<div class=" main-content row position-relative pb-5">
+    <div class="col-md-12 max-content docs-content pb-5">
+        <div class="tab-example-result">
+            <div  class="border-0" style="max-width: 100%;">
+                <table  class="table">
+                    <thead>
+                    <tr >
+                        <th style="padding-left: 0;font-size: 1rem;color: black" scope="col">粉絲列表</th>
+                        <th scope="col"></th>
+                    </tr>
+                    </thead>
+                    <tbody id="fans_">
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.4.0/axios.min.js" integrity="sha512-uMtXmF28A2Ab/JJO2t/vYhlaa/3ahUOgj1Zf27M5rOo8/+fcTUVH0/E0ll68njmjrLqOBjXM3V9NiPFL5ywWPQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js" integrity="sha512-AA1Bzp5Q0K1KanKKmvN/4d3IRKVlv9PYgwFPvm32nPO6QS8yH1HO7LbgB1pgiOxPtfeg5zEn2ba64MUcqJx6CA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<input type="hidden" id="_csrf" value="<%=csrfToken %>">
+<script>
+    const url = window.location.href
+    axios.post(url,{
+        _csrf: '<%=csrfToken%>',
+    }).then(res=>{
+        if(res.data.errno === 0){
+            const fans = res.data.fans
+            fans.forEach(item=>{
+                $('#fans_').append($(`
+                    <tr>
+                        <td style="padding: 0;padding-top: 10px">
+                            <a href="/profile/${item.follower._id}"><img  class="user_img" src="/${item.follower.image}"></a>
+                        </td>
+                        <td style="font-size: 1rem;color: black"><a style="color: black" href="/profile/${item.follower._id}">${item.follower.email}</a></td>
+                    </tr>
+                `))
+            })
+        }
+    })
+</script>
+<%-include('../include/footer.ejs')%>

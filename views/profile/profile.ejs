@@ -1,0 +1,121 @@
+<%-include('../include/header.ejs')%>
+<link rel="stylesheet" href="/css/profile.css">
+
+<script src="/js/feather.min.js"></script>
+<div class="container-fluid container-docs">
+    <nav style="max-width:100% !important;"  class="sidebar_padding sidenav  navbar-vertical navbar-expand-xs navbar-light bg-white" id="sidenav-main">
+        <div style="display: flex">
+            <div class="scrollbar-inner px-4">
+                <div class="docs-sidebar">
+                    <a  href="/">
+                        <h5  class="navbar-title mt-4">
+                            <i   class="navbar-icon" data-feather="home"></i><span class="sidebar_text">首頁</span>
+                        </h5>
+                    </a>
+                </div>
+                <div class="docs-sidebar">
+                    <a  id="toggle-search-button" href="#search">
+                        <h5 id="search" class="navbar-title  mt-4">
+                            <i  class="navbar-icon" data-feather="search"></i><span class="sidebar_text">搜尋</span>
+                        </h5>
+                    </a>
+                </div>
+                <div class="docs-sidebar">
+                    <a  href="/explore">
+                        <h5 class="navbar-title  mt-4">
+                            <i  class="navbar-icon" data-feather="compass"></i><span class="sidebar_text">探索</span>
+                        </h5>
+                    </a>
+                </div>
+                <div class="docs-sidebar">
+                    <a  href="/msg">
+                        <h5  class="navbar-title mt-4">
+                            <i  class="navbar-icon" data-feather="message-circle"></i><span class="sidebar_text">訊息</span>
+                        </h5>
+                    </a>
+                </div>
+                <div class="docs-sidebar">
+                    <a  href="/notice">
+                        <h5  class="navbar-title mt-4">
+                            <i  class="navbar-icon" data-feather="heart"></i><span class="sidebar_text">通知</span>
+                        </h5>
+                    </a>
+                </div>
+                <div class="docs-sidebar">
+                    <a href="/upload">
+                        <h5  class="navbar-title  mt-4">
+                            <i  class="navbar-icon" data-feather="plus-square"></i><span class="sidebar_text">建立</span>
+                        </h5>
+                    </a>
+                </div>
+                <% if(isAuthenticated === true){ %>
+                <div class="docs-sidebar">
+                    <a  href="/profile/<%=user._id%>">
+                        <h5  class="navbar-title-strong  mt-4">
+                            <img class="sidebar_img" src="/<%=user.image%>"><span class="sidebar_text">個人檔案</span>
+                        </h5>
+                    </a>
+                </div>
+                <% } %>
+            </div>
+            <div  id="search-container">
+                <div class="form-group">
+                    <input id="search_user" type="text" class="form-control form-control-muted" placeholder="搜尋用戶 . . . ">
+                </div>
+                <table>
+                    <span id="search_user_result_list"></span>
+                </table>
+            </div>
+        </div>
+    </nav>
+</div>
+
+
+<div class=" main-content row position-relative pb-5 top">
+    <div class="profile_content col-md-12 docs-content pb-5">
+        <div class="tab-example-result">
+            <span style="display: flex">
+                <img class="profile_img" src="/<%=profile.image%>">
+                <span>
+                    <span style="display: flex">
+                        <h5 style="margin-top: 20px;color: black"><%= profile.email %></h5>
+                        <%if (auth === true){ %>
+                            <a href="/edit/<%=profile._id%>" type="button" class="edit_profile btn btn-secondary">
+                                編輯個人檔案
+                            </a>
+                        <% }else {%>
+                            <%if (isfollow === true){ %>
+                                <a href="/disfollow/<%=profile._id%>" type="button" class="edit_profile btn btn-secondary">
+                                    取消追蹤
+                                </a>
+                            <%}else{%>
+                                <a href="/follow/<%=profile._id%>" type="button" class="edit_profile btn btn-secondary">
+                                    追蹤
+                                </a>
+                            <%}%>
+                        <% }%>
+                    </span>
+                    <span style="display: flex">
+                        <h6 style="color: black;margin-right: 30px"><%=postsNum%> 貼文</h6>
+                        <a href="/fans/<%=profile._id%>"><h6 style="color: black;margin-right: 30px"><%=fans%> 紛絲</h6></a>
+                        <a href="/follows/<%=profile._id%>"><h6 style="color: black"><%=follow%> 追蹤中</h6></a>
+                    </span>
+                    <span>
+                        <p style="color: black"><%= profile.info %></p>
+                    </span>
+                </span>
+            </span>
+            <hr style="margin-top: 80px;margin-bottom: 0px">
+            <div class="profile-container">
+                <div class="photo-gallery">
+                    <% for(let post of posts){ %>
+                        <a href="/single/<%=post._id%>"><img  src="/<%=post.image%>" alt="照片1" class="photo"></a>
+                    <% } %>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<%-include('../include/footer.ejs')%>
+

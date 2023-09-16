@@ -1,0 +1,37 @@
+
+<script src="/socket.io/socket.io.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.4.0/axios.min.js" integrity="sha512-uMtXmF28A2Ab/JJO2t/vYhlaa/3ahUOgj1Zf27M5rOo8/+fcTUVH0/E0ll68njmjrLqOBjXM3V9NiPFL5ywWPQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js" integrity="sha512-AA1Bzp5Q0K1KanKKmvN/4d3IRKVlv9PYgwFPvm32nPO6QS8yH1HO7LbgB1pgiOxPtfeg5zEn2ba64MUcqJx6CA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="/assets/libs/feather-icons/dist/feather.min.js"></script>
+<script src="/js/jquery.min.js"></script>
+<script src="/js/bootstrap.bundle.min.js"></script>
+<script src="/js/svg-injector.min.js"></script>
+<script src="/js/feather.min.js"></script>
+<script src="/js/highlight.min.js"></script>
+<script src="/js/clipboard.min.js"></script>
+<script src="/js/quick-website.js"></script>
+<script src="/js/search.js"> </script>
+<script>feather.replace({ width: "1em", height: "1em" })</script>
+<script>!function (e, t, a, n, g) { e[n] = e[n] || [], e[n].push({ "gtm.start": (new Date).getTime(), event: "gtm.js" }); var m = t.getElementsByTagName(a)[0], r = t.createElement(a); r.async = !0, r.src = "js/gtm.js", m.parentNode.insertBefore(r, m) }(window, document, "script", "dataLayer")</script>
+<script>
+    function logout_(){
+        axios.post('/logout',{
+            _csrf:$('#_csrf').val(),
+        }).then(res=>{
+            if(res.data.errno === 0){
+                swal({
+                    title:'已成功登出',
+                    text:'正在倒回主頁面',
+                    timer:1500,
+                    buttons:false,
+                    icon:'success'
+                })
+                setTimeout(()=>{
+                    window.location.href = '/'
+                },1250)
+            }
+        })
+    }
+</script>
+</body>
+</html>

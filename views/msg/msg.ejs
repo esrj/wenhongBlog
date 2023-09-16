@@ -1,0 +1,294 @@
+<%-include('../include/header.ejs')%>
+<link rel="stylesheet" href="/css/msg.css">
+
+
+
+<div class="container-fluid container-docs">
+    <nav style="max-width:100% !important;"  class="sidebar_padding sidenav  navbar-vertical navbar-expand-xs navbar-light bg-white" id="sidenav-main">
+        <div style="display: flex">
+            <div class="scrollbar-inner px-4">
+                <div class="docs-sidebar">
+                    <a href="/">
+                        <h5 class="navbar-title mt-4">
+                            <i  class="navbar-icon" data-feather="home"></i><span class="sidebar_text">首頁</span>
+                        </h5>
+                    </a>
+                </div>
+                <div class="docs-sidebar">
+                    <a  id="toggle-search-button" href="#search">
+                        <h5 id="search" class="navbar-title  mt-4">
+                            <i class="navbar-icon" data-feather="search"></i><span class="sidebar_text">搜尋</span>
+                        </h5>
+                    </a>
+                </div>
+                <div class="docs-sidebar">
+                    <a  href="/explore">
+                        <h5 class="navbar-title  mt-4">
+                            <i class="navbar-icon" data-feather="compass"></i><span class="sidebar_text">探索</span>
+                        </h5>
+                    </a>
+                </div>
+                <div class="docs-sidebar">
+                    <a  href="/msg">
+                        <h5 class="navbar-title-strong mt-4">
+                            <i  class="navbar-icon-strong" data-feather="message-circle"></i><span class="sidebar_text">訊息</span>
+                        </h5>
+                    </a>
+                </div>
+                <div class="docs-sidebar">
+                    <a  href="/notice">
+                        <h5 class="navbar-title mt-4">
+                            <i  class="navbar-icon" data-feather="heart"></i><span class="sidebar_text">通知</span>
+                        </h5>
+                    </a>
+                </div>
+                <div class="docs-sidebar">
+                    <a href="/upload">
+                        <h5 class="navbar-title  mt-4">
+                            <i  class="navbar-icon" data-feather="plus-square"></i><span class="sidebar_text">建立</span>
+                        </h5>
+                    </a>
+                </div>
+                <% if(isAuthenticated === true){ %>
+                <div class="docs-sidebar">
+                    <a  href="/profile/<%=user._id%>">
+                        <h5 class="navbar-title  mt-4">
+                            <img class="sidebar_img" src="/<%=user.image%>"><span class="sidebar_text">個人檔案</span>
+                        </h5>
+                    </a>
+                </div>
+                <% } %>
+            </div>
+            <div id="search-container">
+                <div class="form-group">
+                    <input id="search_user" type="text" class="form-control form-control-muted" placeholder="搜尋用戶 . . . ">
+                </div>
+                <table>
+                    <span id="search_user_result_list"></span>
+                </table>
+            </div>
+        </div>
+    </nav>
+</div>
+
+<div class=" main-content row position-relative pb-5">
+    <div id="hiddenDiv" class="scrollable-content col-md-5 msg_list ">
+        <table class="table">
+            <thead>
+            <tr>
+                <th style="font-size: 1rem;color: black" scope="col">粉絲列表</th>
+                <th scope="col"></th>
+            </tr>
+            </thead>
+            <tbody id="fans_">
+
+
+            </tbody>
+        </table>
+    </div>
+    <div id="hiddenLabel" class="scrollable-content col-md-7 msg ">
+        <h6 class="msg_title"> <%=target.email%> </h6>
+        <hr style="margin-top: 25px">
+        <div style=" overflow-y: auto;" >
+            <div id="msgs">
+                <% msgs.forEach(msg=>{ %>
+                    <% if(msg.sender._id.toString() === user._id.toString()){ %>
+                        <div style="display: flex;flex-direction: column;align-items: flex-end;">
+                            <div>
+                                <div style="margin-bottom: 10px" class="card shadow-none">
+                                    <div class="p-2 d-flex">
+                                        <div>
+                                            <p class="text-sm text-muted mb-0">
+                                                <%=msg.content%>
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    <% }else{ %>
+                        <div style="display: flex">
+                            <img style="margin-right: 15px;display: flex;flex-direction: column;" class="user_img" src="/<%=msg.sender.image%>">
+                            <div>
+                                <div style="margin-bottom: 10px" class="card shadow-none">
+                                    <div class="p-2 d-flex">
+                                        <div>
+                                            <p class="text-sm text-muted mb-0">
+                                                <%=msg.content%>
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    <% }%>
+                <%  }) %>
+            </div>
+        </div>
+
+        <% if(!empty){ %>
+            <div class=" form-group ">
+                <div class="input-group">
+                    <input id="msg_send" type="text" class="form-control form-control-flush" placeholder="留言 ... ">
+                    <div class="input-group-append">
+                        <a href="#" onclick="send_()" style="height: 30px;margin-top:10px;border-radius: 7px; padding: 0 10px 0 10px" class="input-group-text" id="send">發佈</a>
+                    </div>
+                </div>
+                <hr style="margin-top:0">
+            </div>
+        <%}%>
+    </div>
+</div>
+
+<%-include('../include/footer.ejs')%>
+<script>
+
+    // 手機螢幕適配
+    let urlParams = new URLSearchParams(window.location.search);
+    var screenWidth = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
+    if(urlParams.has('username')){
+
+        if (screenWidth <= 767){
+            $("#hiddenDiv").addClass('d-none d-md-block')
+            $("#hiddenLabel").removeClass('d-none d-md-block')
+        }
+    }else{
+        if (screenWidth <= 767){
+            $("#hiddenLabel").addClass('d-none d-md-block')
+        }
+    }
+    window.addEventListener('resize',()=>{
+        var screenWidth = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
+        if(urlParams.has('username')){
+            if (screenWidth <= 767){
+                $("#hiddenDiv").addClass('d-none d-md-block')
+                $("#hiddenLabel").removeClass('d-none d-md-block')
+            }
+        }else{
+            if (screenWidth <= 767){
+                $("#hiddenLabel").addClass('d-none d-md-block')
+            }
+        }
+    })
+
+
+
+    // 滾動到底部
+    const rightContent = document.querySelector(".msg");
+    rightContent.scrollTop = rightContent.scrollHeight;
+
+    // 自動加載粉絲列表
+    axios.post('/msg',{
+        _csrf:"<%=csrfToken%>"
+    }).then(res=>{
+        if(res.data.errno === 0){
+            const users = res.data.user
+            users.forEach(item=>{
+                $("#fans_").append($(`
+                    <tr>
+                        <td >
+                            <a><img style="margin:0" class="user_img" src="/${item.follower.image}"></a>
+                        </td>
+                        <td style="font-size: 1rem;color: black;padding-top: 20px">
+                            <a style="color: black"  href="/msg?username=${item.follower._id}">${item.follower.email}</a>
+                        </td>
+                    </tr>
+                `))
+            })
+        }
+    })
+
+
+
+
+
+
+    // enter 觸發訊息送出
+    let inputElement = document.getElementById("msg_send");
+    inputElement.addEventListener("keypress", function(event) {
+        if (event.key === "Enter" || event.keyCode === 13) {
+            let urlParams = new URLSearchParams(window.location.search);
+            if($("#msg_send").val() !== '' || $("#msg_send").val().replace(' ','') !== ''){
+                const my_msg = $("#msg_send").val()
+                axios.post('/send',{
+                    '_csrf':'<%=csrfToken%>',
+                    'content':my_msg,
+                    'targetId':urlParams.get('username')
+                }).then((res)=>{
+                    if(res.data.errno === 0){
+                        $("#msgs").append($(`
+                            <div style="display: flex;flex-direction: column;align-items: flex-end;">
+                                <div>
+                                    <div style="margin-bottom: 10px" class="card shadow-none">
+                                        <div class="p-2 d-flex">
+                                            <div>
+                                                <p class="text-sm text-muted mb-0">
+                                                    ${my_msg}
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        `))
+                    }
+                })
+            }
+            inputElement.value = ""
+        }
+    });
+
+
+    const socket = io()
+
+    function send_(){
+        let urlParams = new URLSearchParams(window.location.search);
+        if($("#msg_send").val() !== '' || $("#msg_send").val().replace(' ','') !== ''){
+            const my_msg = $("#msg_send").val()
+            axios.post('/send',{
+                '_csrf':'<%=csrfToken%>',
+                'content':my_msg,
+                'targetId':urlParams.get('username')
+            }).then((res)=>{
+                if(res.data.errno === 0){
+                    $("#msgs").append($(`
+                        <div style="display: flex;flex-direction: column;align-items: flex-end;">
+                            <div>
+                                <div style="margin-bottom: 10px" class="card shadow-none">
+                                    <div class="p-2 d-flex">
+                                        <div>
+                                            <p class="text-sm text-muted mb-0">
+                                                ${my_msg}
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    `))
+                }
+            })
+        }
+        inputElement.value = ""
+    }
+
+    socket.on('<%=target._id%>to<%=user._id%>',msg=>{
+        $("#msgs").append($(`
+            <div style="display: flex">
+                <img style="margin-right: 15px;display: flex;flex-direction: column;" class="user_img" src="/${msg.sender.image}">
+                <div>
+                    <div style="margin-bottom: 10px" class="card shadow-none">
+                        <div class="p-2 d-flex">
+                            <div>
+                                <p class="text-sm text-muted mb-0">
+                                    ${msg.content}
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `))
+    })
+
+</script>

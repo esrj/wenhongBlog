@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,shrink-to-fit=no">
+    <meta name="description" content="Quick Website UI Kit is an innovative HTML template solution which combines beautiful design and flawless functionality.">
+    <meta name="author" content="Webpixels">
+    <title>使用者登入</title>
+    <style>
+        @keyframes hidePreloader {
+            0% {
+                width: 100%;
+                height: 100%
+            }
+
+            100% {
+                width: 0;
+                height: 0
+            }
+        }
+
+        body>div.preloader {
+            position: fixed;
+            background: #fff;
+            width: 100%;
+            height: 100%;
+            z-index: 1071;
+            opacity: 0;
+            transition: opacity .5s ease;
+            overflow: hidden;
+            pointer-events: none;
+            display: flex;
+            align-items: center;
+            justify-content: center
+        }
+
+        body:not(.loaded)>div.preloader {
+            opacity: 1
+        }
+
+        body:not(.loaded) {
+            overflow: hidden
+        }
+
+        body.loaded>div.preloader {
+            animation: hidePreloader .5s linear .5s forwards
+        }
+    </style>
+    <script>window.addEventListener("load", function () { setTimeout(function () { document.querySelector("body").classList.add("loaded") }, 300) })</script>
+    <link rel="icon" href="/picture/favicon.png" type="image/png">
+    <link rel="stylesheet" href="/css/all.min.css">
+    <link rel="stylesheet" href="/css/quick-website.css" id="stylesheet">
+</head>
+
+<body>
+<section>
+    <div class="container d-flex flex-column">
+        <div class="row align-items-center justify-content-center min-vh-100">
+            <div class="col-md-6 col-lg-5 col-xl-5 py-6 py-md-0">
+                <div class="card shadow zindex-100 mb-0">
+                    <div class="card-body px-md-5 py-5">
+                        <div class="mb-5">
+                            <h6 class="h3">登入</h6>
+                        </div><span class="clearfix"></span>
+                        <form>
+                            <div class="form-group"><label class="form-control-label">使用者電子郵件</label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text"><i data-feather="user"></i></span>
+                                    </div>
+                                    <input type="email" class="form-control" id="email" placeholder="name@example.com">
+                                </div>
+                            </div>
+                            <div class="form-group mb-0">
+                                <div class="d-flex align-items-center justify-content-between">
+                                    <div><label class="form-control-label">密碼</label></div>
+                                    <div class="mb-2">
+                                        <a href="#" class="small text-muted text-underline--dashed border-primary" data-toggle="password-text" data-target="#input-password">
+                                            顯示密碼
+                                        </a>
+                                    </div>
+                                </div>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text">
+                                            <i data-feather="key"></i>
+                                        </span>
+                                    </div>
+                                    <input type="password" class="form-control" id="input-password" placeholder="Password">
+                                </div>
+                            </div>
+                            <input type="hidden" id="_csrf" name="_csrf" value ="<%= csrfToken %>"/>
+                            <div class="mt-4">
+                                <a style="color: white" onclick="signIn()" class="btn btn-block btn-primary">
+                                    Sign in
+                                </a>
+                            </div>
+                            <div class="mt-4">
+                                <a style="border-color:black;background-color:white;color:black" href="/auth/google" class="btn btn-block btn-primary">
+                                    <img style="vertical-align: bottom;width: 25px;height: auto" src="/picture/google-icon.png"> <span> </span>
+                                    <span style="margin-top: 5px"> 使用 google 繼續</span>
+                                </a>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="card-footer px-md-5">
+                        <small>尚未註冊帳號?</small>
+                        <a style="margin-right: 10px" href="/register" class="small font-weight-bold">創建帳號</a>
+                        <small>忘記密碼?</small>
+                        <a href="/reset" class="small font-weight-bold">點擊這裡</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<script src="/js/jquery.min.js"></script>
+<script src="/js/bootstrap.bundle.min.js"></script>
+<script src="/js/svg-injector.min.js"></script>
+<script src="/js/feather.min.js"></script>
+<script src="/js/quick-website.js"></script>
+<script>feather.replace({ width: "1em", height: "1em" })</script>
+<script>!function (e, t, a, n, g) { e[n] = e[n] || [], e[n].push({ "gtm.start": (new Date).getTime(), event: "gtm.js" }); var m = t.getElementsByTagName(a)[0], r = t.createElement(a); r.async = !0, r.src = "static/js/gtm.js", m.parentNode.insertBefore(r, m) }(window, document, "script", "dataLayer")</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.4.0/axios.min.js" integrity="sha512-uMtXmF28A2Ab/JJO2t/vYhlaa/3ahUOgj1Zf27M5rOo8/+fcTUVH0/E0ll68njmjrLqOBjXM3V9NiPFL5ywWPQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js" integrity="sha512-AA1Bzp5Q0K1KanKKmvN/4d3IRKVlv9PYgwFPvm32nPO6QS8yH1HO7LbgB1pgiOxPtfeg5zEn2ba64MUcqJx6CA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script>
+
+    let inputElement = document.getElementById("input-password");
+    inputElement.addEventListener("keypress", function(event) {
+        if (event.key === "Enter" || event.keyCode === 13) {
+            axios.post('/login/',{
+                _csrf:$('#_csrf').val(),
+                'email':$('#email').val(),
+                'password':$("#input-password").val()
+            }).then(res=>{
+                console.log(res.data)
+                if(res.data.errno === 0 ){
+                    swal({
+                        title:'登入成功',
+                        text:'正在為您導向主頁面',
+                        timer:1500,
+                        buttons:false,
+                        icon:'success'
+                    })
+                    setTimeout(()=>{
+                        window.location.href = '/'
+                    },1250)
+                }else if (res.data.errno === 1){
+                    swal({
+                        title:'帳號不存在',
+                        text:'請輸入正確的帳號或密碼',
+                        timer:750,
+                        buttons:false,
+                        icon:'error'
+                    })
+                }else if (res.data.errno === 2){
+                    swal({
+                        title:'密碼不正確',
+                        text:'請輸入正確的帳號或密碼',
+                        timer:750,
+                        buttons:false,
+                        icon:'error'
+                    })
+                }
+
+            })
+        }
+    });
+
+    function signIn(){
+        axios.post('/login/',{
+            _csrf:$('#_csrf').val(),
+            'email':$('#email').val(),
+            'password':$("#input-password").val()
+        }).then(res=>{
+            console.log(res.data)
+            if(res.data.errno === 0 ){
+                swal({
+                    title:'登入成功',
+                    text:'正在為您導向主頁面',
+                    timer:1500,
+                    buttons:false,
+                    icon:'success'
+                })
+                setTimeout(()=>{
+                    window.location.href = '/'
+                },1250)
+            }else if (res.data.errno === 1){
+                swal({
+                    title:'帳號不存在',
+                    text:'請輸入正確的帳號或密碼',
+                    timer:750,
+                    buttons:false,
+                    icon:'error'
+                })
+            }else if (res.data.errno === 2){
+                swal({
+                    title:'密碼不正確',
+                    text:'請輸入正確的帳號或密碼',
+                    timer:750,
+                    buttons:false,
+                    icon:'error'
+                })
+            }
+
+        })
+    }
+</script>
+</body>
+</html>
+

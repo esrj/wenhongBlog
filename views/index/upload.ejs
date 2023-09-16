@@ -1,0 +1,137 @@
+<%-include('../include/header.ejs')%>
+<link rel="stylesheet" href="css/upload.css">
+<div class="container-fluid container-docs">
+    <nav style="max-width:100% !important;"  class="sidebar_padding sidenav  navbar-vertical navbar-expand-xs navbar-light bg-white" id="sidenav-main">
+        <div style="display: flex">
+            <div class="scrollbar-inner px-4">
+                <div class="docs-sidebar">
+                    <a  href="/">
+                        <h5 class="navbar-title mt-4">
+                            <i   class="navbar-icon" data-feather="home"></i><span class="sidebar_text">首頁</span>
+                        </h5>
+                    </a>
+                </div>
+                <div class="docs-sidebar">
+                    <a  id="toggle-search-button" href="#search">
+                        <h5 id="search" class="navbar-title  mt-4">
+                            <i  class="navbar-icon" data-feather="search"></i><span class="sidebar_text">搜尋</span>
+                        </h5>
+                    </a>
+                </div>
+                <div class="docs-sidebar">
+                    <a href="/explore">
+                        <h5 class="navbar-title  mt-4">
+                            <i  class="navbar-icon" data-feather="compass"></i><span class="sidebar_text">探索</span>
+                        </h5>
+                    </a>
+                </div>
+                <div class="docs-sidebar">
+                    <a href="/msg">
+                        <h5 class="navbar-title mt-4">
+                            <i  class="navbar-icon" data-feather="message-circle"></i><span class="sidebar_text">訊息</span>
+                        </h5>
+                    </a>
+                </div>
+                <div class="docs-sidebar">
+                    <a href="/notice">
+                        <h5 class="navbar-title mt-4">
+                            <i  class="navbar-icon" data-feather="heart"></i><span class="sidebar_text">通知</span>
+                        </h5>
+                    </a>
+                </div>
+                <div class="docs-sidebar">
+                    <a href="/upload">
+                        <h5 class="navbar-title-strong  mt-4">
+                            <i  class="navbar-icon-strong" data-feather="plus-square"></i><span class="sidebar_text">建立</span>
+                        </h5>
+                    </a>
+                </div>
+                <% if(isAuthenticated === true){ %>
+                <div class="docs-sidebar">
+                    <a  href="/profile/<%=user._id%>">
+                        <h5 class="navbar-title  mt-4">
+                            <img class="sidebar_img" src="/<%=user.image%>"><span class="sidebar_text">個人檔案</span>
+                        </h5>
+                    </a>
+                </div>
+                <% } %>
+            </div>
+            <div  id="search-container">
+                <div class="form-group">
+                    <input id="search_user" type="text" class="form-control form-control-muted" placeholder="搜尋用戶 . . . ">
+                </div>
+                <table>
+                    <span id="search_user_result_list"></span>
+                </table>
+            </div>
+        </div>
+    </nav>
+</div>
+
+
+<div class=" main-content row position-relative pb-5 top">
+    <div class="col-md-12 max-content docs-content pb-5">
+        <div class="tab-example-result">
+            <span id="post">
+                <div  class="card  border-0" style="max-width: 100%;">
+                    <div class="card-header">
+                        <div style="display: flex;justify-content: center;">
+                            <h5 style=";color: black" class="card-title">建立新貼文</h5>
+                        </div>
+                    </div>
+                    <div style="width: 100%;margin-bottom: 0px" >
+                        <form style="width: 100%" id="upload-form" enctype="multipart/form-data">
+                            <div style="padding: 20px;
+                                        text-align: center;
+                                        border-top-width: 1px;
+                                        border-top-style: groove;
+                                        border-top-color: #9fa1a6" id="drag-drop-area">
+                                <span id="drop-area">
+                                    <img width="120px" style="margin-top:50px" src="picture/image.png">
+                                    <p style="font-size: 22px;font-weight: 400;">將想要上傳的圖片拖曳到這裡</p>
+                                    <input style="margin-bottom: 50px" class="upload-btn" id="img"  type="file" accept="image/*">
+                                </span>
+                                <div id="image-preview"></div>
+                            </div>
+                        </form>
+                        <span id="send">
+                        </span>
+                    </div>
+                </div>
+            </span>
+        </div>
+    </div>
+</div>
+<input type="hidden" id="_csrf" value="<%=csrfToken %>">
+<input type="hidden" id="username_" value="<%=user.email%>">
+<input type="hidden" id="image_" value="<%=user.image%>">
+<script src="js/upload.js"></script>
+<script>
+    function submit(){
+        if(file){
+            let formdata = new FormData();
+            formdata.append('image',file)
+            formdata.append('_csrf',$('#_csrf').val())
+            formdata.append('content',$("#content").val())
+            console.log(formdata)
+            axios({
+                url:'/upload',
+                method:'post',
+                data:formdata,
+                headers:{'Content-Type': 'multipart/form-data;charset=UTF-8'}
+            }).then(()=>{
+                swal({
+                    'title':'上傳成功',
+                    'icon':'success',
+                    'timer':1500
+                })
+                setTimeout(()=>{
+                    window.location.href= '/'
+                },1000)
+            })
+        }
+    }
+
+</script>
+
+<%-include('../include/footer.ejs')%>
